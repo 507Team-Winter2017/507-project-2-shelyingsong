@@ -52,12 +52,14 @@ for gallery_img in gallery_soup.find_all('img'):
 print('\n*********** PROBLEM 4 ***********')
 print("UMSI faculty directory emails\n")
 def umsiEmail(x, count):
-    umsi = urllib.request.urlopen(x)
+    req = urllib.request.Request(x, None, {'User-Agent': 'SI_CLASS'})
+    umsi = urllib.request.urlopen(req)
     umsi_soup = BeautifulSoup(umsi,'html.parser')
     for umsi_email in umsi_soup.find_all('div', class_="field field-name-contact-details field-type-ds field-label-hidden"):
         umsi_email = umsi_email.find('a')
         email_url = 'https://www.si.umich.edu/' + umsi_email.get('href', None)
-        emails = urllib.request.urlopen(email_url)
+        reqs = urllib.request.Request(email_url, None, {'User-Agent': 'SI_CLASS'})
+        emails = urllib.request.urlopen(reqs)
         email_soup  = BeautifulSoup(emails, 'html.parser')
         email = email_soup.find('div', class_="field field-name-field-person-email field-type-email field-label-inline clearfix").find('a')
         print(str(count) + ' ' + email.get_text())
